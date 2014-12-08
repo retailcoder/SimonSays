@@ -40,12 +40,12 @@ namespace SimonSays
             Activated += MainWindow_Activated;
         }
 
-        private void MainWindow_Activated(object sender, EventArgs e)
+        private async void MainWindow_Activated(object sender, EventArgs e)
         {
             GameScoreLabel.Visibility = Visibility.Collapsed;
             GameButton.Text = "Start!";
 
-            AnimateMessageBand(36);
+            await AnimateMessageBand(36);
             Activated -= MainWindow_Activated;
 
             GameButton.MouseDown += GameButtonStartGame;
@@ -70,11 +70,11 @@ namespace SimonSays
             }
         }
 
-        public void OnGameOver()
+        public async Task OnGameOver()
         {
             GameButton.Text = string.Format("Oops! {0} rounds completed.", ((SimonSaysRound)DataContext).Round - 1);
             GameScoreLabel.Visibility = Visibility.Visible;
-            AnimateMessageBand(56);
+            await AnimateMessageBand(56);
             
             DisableButtons();
 
@@ -159,9 +159,9 @@ namespace SimonSays
             e.Handled = true;
         }
 
-        private void GameButtonStartGame(object sender, MouseButtonEventArgs e)
+        private async void GameButtonStartGame(object sender, MouseButtonEventArgs e)
         {
-            AnimateMessageBand(0);
+            await AnimateMessageBand(0);
             e.Handled = true;
             
             GameButton.MouseDown -= GameButtonStartGame;
@@ -175,9 +175,9 @@ namespace SimonSays
         }
 
         public event EventHandler PlayNextRound;
-        private void GameButtonNextRound(object sender, MouseButtonEventArgs e)
+        private async void GameButtonNextRound(object sender, MouseButtonEventArgs e)
         {
-            AnimateMessageBand(0);
+            await AnimateMessageBand(0);
             e.Handled = true;
 
             var handler = PlayNextRound;
