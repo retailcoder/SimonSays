@@ -62,11 +62,10 @@ namespace SimonSays
         public event EventHandler<SimonButtonEventArgs> SimonButtonClicked;
         public async Task OnSimonButtonClicked(SimonButton button)
         {
-            await HighlightSimonButton(button);
             var handler = SimonButtonClicked;
             if (handler != null)
             {
-                handler(this, new SimonButtonEventArgs(button));
+                handler.Invoke(this, new SimonButtonEventArgs(button));
             }
         }
 
