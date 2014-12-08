@@ -17,16 +17,19 @@ namespace SimonSays
     /// </summary>
     public partial class App : Application
     {
-        private MainWindow _mainWindow = new MainWindow();
+        private readonly MainWindow _mainWindow = new MainWindow();
         private SimonSaysRound _currentRound;
 
         private Random _random;
+        private readonly int _seed;
+
+        public App()
+        {
+            _seed = new Random().Next();
+        }
 
         protected override void OnStartup(StartupEventArgs e)
-        {
-            var seeder = new Random();
-            _random = new Random(seeder.Next());
-            
+        {            
             _mainWindow.SimonButtonClicked += OnSimonButtonClick;
             _mainWindow.PlayNextRound += _mainWindow_PlayNextRound;
             _mainWindow.ShowDialog();
@@ -56,9 +59,10 @@ namespace SimonSays
 
         private IEnumerable<SimonButton> GenerateSequence(int length)
         {
+            _random = new Random(_seed);
             for (var i = 0; i < length; i++)
             {
-                yield return (SimonButton)_random.Next(4);
+                yield return (SimonButton)_random.Next(Enum.GetValues(typeof(SimonButton)).GetLength(0));
             }
         }
 
