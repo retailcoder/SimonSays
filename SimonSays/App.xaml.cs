@@ -36,7 +36,7 @@ namespace SimonSays
         }
 
         protected override void OnStartup(StartupEventArgs e)
-        {            
+        {
             _mainWindow.SimonButtonClicked += OnSimonButtonClick;
             _mainWindow.PlayNextRound += _mainWindow_PlayNextRound;
             _mainWindow.ShowDialog();
@@ -93,7 +93,7 @@ namespace SimonSays
             }
         }
 
-        private void OnSimonButtonClick(object sender, SimonButtonEventArgs e)
+        private async void OnSimonButtonClick(object sender, SimonButtonEventArgs e)
         {
             using (var player = new SoundPlayer(_sounds[e.Button]))
             {
@@ -104,11 +104,8 @@ namespace SimonSays
             {
                 _currentRound.Play(e.Button);
             }
-            else
-            {
-                _mainWindow.HighlightSimonButton(e.Button);
-                Thread.Sleep(300);
-            }
+
+            await _mainWindow.HighlightSimonButton(e.Button);
         }
     }
 }
