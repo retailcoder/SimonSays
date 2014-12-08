@@ -20,12 +20,19 @@ namespace SimonSays
         private readonly MainWindow _mainWindow = new MainWindow();
         private SimonSaysRound _currentRound;
 
-        private Random _random;
+        private readonly IDictionary<SimonButton, string> _sounds;
+
         private readonly int _seed;
 
         public App()
         {
             _seed = new Random().Next();
+
+            var folder = Path.GetDirectoryName(GetType().Assembly.Location);
+            _sounds = Enum.GetValues(typeof (SimonButton))
+                          .Cast<SimonButton>()
+                          .ToDictionary(button => button,
+                                        button => Path.Combine(folder ?? string.Empty, "Resources", button + ".wav"));
         }
 
         protected override void OnStartup(StartupEventArgs e)
@@ -59,10 +66,10 @@ namespace SimonSays
 
         private IEnumerable<SimonButton> GenerateSequence(int length)
         {
-            _random = new Random(_seed);
+            var random = new Random(_seed);
             for (var i = 0; i < length; i++)
             {
-                yield return (SimonButton)_random.Next(Enum.GetValues(typeof(SimonButton)).GetLength(0));
+                yield return (SimonButton)random.Next(Enum.GetValues(typeof(SimonButton)).GetLength(0));
             }
         }
 
@@ -91,9 +98,7 @@ namespace SimonSays
 
         private void OnSimonButtonClick(object sender, SimonButtonEventArgs e)
         {
-            var folder = Path.GetDirectoryName(GetType().Assembly.Location);
-            var soundFile = Path.Combine(folder ?? string.Empty, "Resources", e.Button + ".wav");
-            using (var player = new SoundPlayer(soundFile))
+            using (var player = new SoundPlayer(_sounds[e.Button]))
             {
                 player.Play();
             }
