@@ -72,7 +72,7 @@ namespace SimonSays
 
         public void OnGameOver()
         {
-            GameButton.Text = "Game Over!";
+            GameButton.Text = string.Format("Oops! {0} rounds completed.", ((SimonSaysRound)DataContext).Round - 1);
             GameScoreLabel.Visibility = Visibility.Visible;
             AnimateMessageBand(56);
             
@@ -97,32 +97,32 @@ namespace SimonSays
             Blue.MouseDown += Blue_MouseDown;
         }
 
-        public void OnRoundSuccessful()
+        public async Task OnRoundSuccessful()
         {
             DisableButtons();
             GameButton.Text = string.Format("Round {0} completed! Ready?", ((SimonSaysRound)DataContext).Round);
             GameScoreLabel.Visibility = Visibility.Visible;
-            AnimateMessageBand(56);
+            await AnimateMessageBand(56);
             GameButton.MouseDown += GameButtonNextRound;
         }
 
-        private async void AnimateMessageBand(double height)
+        private async Task AnimateMessageBand(double height)
         {
             var animation = new DoubleAnimation(height, new Duration(TimeSpan.FromMilliseconds(200)));
+            
             Storyboard.SetTargetName(animation, MessageBar.Name);
             Storyboard.SetTargetProperty(animation, new PropertyPath("Height"));
+
             var story = new Storyboard();
             story.Children.Add(animation);
-            //story.Begin(MessageBar);
             await story.BeginAsync(MessageBar);
+
             story.Remove();
         }
 
         public async Task HighlightSimonButton(SimonButton button)
         {
             var border = _buttons[button];
-
-            border.VerifyAccess();
             var animation = new DoubleAnimation(0, 0.75, new Duration(TimeSpan.FromMilliseconds(100)));
 
             Storyboard.SetTargetName(animation, button.ToString());
@@ -130,33 +130,32 @@ namespace SimonSays
 
             var story = new Storyboard();
             story.Children.Add(animation);
-            //story.Begin(_buttons[button]);
             await story.BeginAsync(border);
 
             story.Remove();
         }
 
-        private async void Blue_MouseDown(object sender, MouseButtonEventArgs e)
+        private void Blue_MouseDown(object sender, MouseButtonEventArgs e)
         {
-            await OnSimonButtonClicked(SimonButton.Blue);
+            OnSimonButtonClicked(SimonButton.Blue);
             e.Handled = true;
         }
 
-        private async void Yellow_MouseDown(object sender, MouseButtonEventArgs e)
+        private void Yellow_MouseDown(object sender, MouseButtonEventArgs e)
         {
-            await OnSimonButtonClicked(SimonButton.Yellow);
+            OnSimonButtonClicked(SimonButton.Yellow);
             e.Handled = true;
         }
 
-        private async void Green_MouseDown(object sender, MouseButtonEventArgs e)
+        private void Green_MouseDown(object sender, MouseButtonEventArgs e)
         {
-            await OnSimonButtonClicked(SimonButton.Green);
+            OnSimonButtonClicked(SimonButton.Green);
             e.Handled = true;
         }
 
-        private async void Red_MouseDown(object sender, MouseButtonEventArgs e)
+        private void Red_MouseDown(object sender, MouseButtonEventArgs e)
         {
-            await OnSimonButtonClicked(SimonButton.Red);
+            OnSimonButtonClicked(SimonButton.Red);
             e.Handled = true;
         }
 

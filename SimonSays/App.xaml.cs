@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Media;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 
@@ -81,11 +82,12 @@ namespace SimonSays
             }
         }
 
-        private async void PlaySequence()
+        private async Task PlaySequence()
         {
             foreach (var button in _currentRound.Sequence)
             {
                 await OnSimonButtonClickAsync(null, new SimonButtonEventArgs(button));
+                Thread.Sleep(300);
             }
         }
 
