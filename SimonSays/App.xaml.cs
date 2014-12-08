@@ -87,12 +87,9 @@ namespace SimonSays
 
         private void PlaySequence()
         {
-            var tasks = _currentRound.Sequence.Select(
-                button => new Task(() => OnSimonButtonClick(null, new SimonButtonEventArgs(button))));
-
-            foreach (var task in tasks)
+            foreach (var button in _currentRound.Sequence)
             {
-                task.RunSynchronously();
+                OnSimonButtonClick(null, new SimonButtonEventArgs(button));
             }
         }
 
@@ -110,6 +107,7 @@ namespace SimonSays
             else
             {
                 _mainWindow.HighlightSimonButton(e.Button);
+                Thread.Sleep(300);
             }
         }
     }
