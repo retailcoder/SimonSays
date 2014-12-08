@@ -1,12 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Configuration;
-using System.Data;
 using System.IO;
 using System.Linq;
 using System.Media;
-using System.Reflection;
-using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 
@@ -85,15 +81,20 @@ namespace SimonSays
             }
         }
 
-        private void PlaySequence()
+        private async void PlaySequence()
         {
             foreach (var button in _currentRound.Sequence)
             {
-                OnSimonButtonClick(null, new SimonButtonEventArgs(button));
+                await OnSimonButtonClickAsync(null, new SimonButtonEventArgs(button));
             }
         }
 
-        private async void OnSimonButtonClick(object sender, SimonButtonEventArgs e)
+        private void OnSimonButtonClick(object sender, SimonButtonEventArgs e)
+        {
+            OnSimonButtonClickAsync(sender, e);
+        }
+
+        private async Task OnSimonButtonClickAsync(object sender, SimonButtonEventArgs e)
         {
             using (var player = new SoundPlayer(_sounds[e.Button]))
             {
