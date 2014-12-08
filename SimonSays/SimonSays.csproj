@@ -104,7 +104,6 @@
     <Content Include="Resources\Blue.wav">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Resource Include="Resources\Simon.jpg" />
     <Content Include="Resources\Yellow.wav">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
