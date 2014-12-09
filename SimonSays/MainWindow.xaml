@@ -8,13 +8,78 @@
         Height="480" Width="480" 
         AllowsTransparency="True" Background="Transparent" WindowStyle="None" 
         d:DataContext="{d:DesignInstance simonSays:SimonSaysRound}">
+    
+    <Window.Resources>
+        
+        <RadialGradientBrush x:Key="GreenBrush" GradientOrigin="1,1" RadiusX="1" RadiusY="1">
+            <GradientStop Color="LightGreen" Offset="0.0" />
+            <GradientStop Color="DarkGreen" Offset="0.55" />
+        </RadialGradientBrush>
+
+        <RadialGradientBrush x:Key="RedBrush" GradientOrigin="0,1" RadiusX="1" RadiusY="1">
+            <GradientStop Color="LightPink" Offset="0.0" />
+            <GradientStop Color="DarkRed" Offset="0.55" />
+        </RadialGradientBrush>
+
+        <RadialGradientBrush x:Key="YellowBrush" GradientOrigin="1,0" RadiusX="1" RadiusY="1">
+            <GradientStop Color="LightYellow" Offset="0.0" />
+            <GradientStop Color="Orange" Offset="0.55" />
+        </RadialGradientBrush>
+
+        <RadialGradientBrush x:Key="BlueBrush" GradientOrigin="0,0" RadiusX="1" RadiusY="1">
+            <GradientStop Color="LightSkyBlue" Offset="0.0" />
+            <GradientStop Color="Blue" Offset="0.55" />
+        </RadialGradientBrush>
+
+        <Storyboard x:Key="MouseEnterStoryboard" TargetProperty="Background.GradientStops[1].Offset" Duration="0:0:0.25">
+            <DoubleAnimation To="1.0" />
+            <Storyboard TargetProperty="Background.GradientStops[0].Offset">
+                <DoubleAnimation To="0.2" />
+            </Storyboard>
+        </Storyboard>
+        <Storyboard x:Key="MouseLeaveStoryboard" TargetProperty="Background.GradientStops[1].Offset" Duration="0:0:0.25">
+            <DoubleAnimation To="0.5" />
+            <Storyboard TargetProperty="Background.GradientStops[0].Offset">
+                <DoubleAnimation To="0.0" />
+            </Storyboard>
+        </Storyboard>
+        
+        <Style x:Key="SimonButtonStyle" TargetType="Border">
+            <Style.Setters>
+                <Setter Property="Margin" Value="1" />
+                <Setter Property="CornerRadius" Value="16" />
+            </Style.Setters>
+            <Style.Triggers>
+                <EventTrigger RoutedEvent="Border.MouseEnter">
+                    <BeginStoryboard Storyboard="{StaticResource MouseEnterStoryboard}" />
+                </EventTrigger>
+                <EventTrigger RoutedEvent="Border.MouseLeave">
+                    <BeginStoryboard Storyboard="{StaticResource MouseLeaveStoryboard}" />
+                </EventTrigger>
+            </Style.Triggers>
+        </Style>
+        
+        <Style x:Key="GreenButtonStyle" TargetType="Border" BasedOn="{StaticResource SimonButtonStyle}">
+            <Setter Property="Background" Value="{StaticResource GreenBrush}" />
+        </Style>
+        <Style x:Key="RedButtonStyle" TargetType="Border" BasedOn="{StaticResource SimonButtonStyle}">
+            <Setter Property="Background" Value="{StaticResource RedBrush}" />
+        </Style>
+        <Style x:Key="YellowButtonStyle" TargetType="Border" BasedOn="{StaticResource SimonButtonStyle}">
+            <Setter Property="Background" Value="{StaticResource YellowBrush}" />
+        </Style>
+        <Style x:Key="BlueButtonStyle" TargetType="Border" BasedOn="{StaticResource SimonButtonStyle}">
+            <Setter Property="Background" Value="{StaticResource BlueBrush}" />
+        </Style>
+
+    </Window.Resources>
+    
     <Window.Clip>
-        <EllipseGeometry RadiusX="240" RadiusY="240" Center="242,242" />
+        <EllipseGeometry RadiusX="240" RadiusY="240" Center="240,240" />
     </Window.Clip>
+    
     <Border Background="Black" BorderThickness="2">
-        <Border.Clip>
-            <EllipseGeometry Center="240,240" RadiusX="238" RadiusY="238" />
-        </Border.Clip>
+        
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="*" />
@@ -26,167 +91,43 @@
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
 
-            <StackPanel x:Name="MessageBar" Grid.Row="1" Grid.ColumnSpan="2" Margin="4" Height="0">
-                <TextBlock x:Name="GameButton" Foreground="White" HorizontalAlignment="Center" FontSize="24" FontWeight="Bold" />
-                <TextBlock x:Name="GameScoreLabel" Text="{Binding Score, StringFormat=Your score: \{0\}}" Foreground="White" HorizontalAlignment="Center" FontWeight="Bold" IsEnabled="False" />
-            </StackPanel>
-            
-            <Border x:Name="Green" Margin="1" CornerRadius="16" MouseDown="Green_MouseDown">
+            <Border x:Name="Green" Grid.Row="0" Grid.Column="0" 
+                    Style="{StaticResource GreenButtonStyle}"  
+                    MouseDown="Green_MouseDown">
                 <Border.Clip>
                     <EllipseGeometry Center="240,240" RadiusX="240" RadiusY="240" />
                 </Border.Clip>
-                <Border.Style>
-                    <Style>
-                        <Setter Property="Border.Background">
-                            <Setter.Value>
-                                <RadialGradientBrush GradientOrigin="1,1" RadiusX="1" RadiusY="1">
-                                    <GradientStop Color="LightGreen" Offset="0.0" />
-                                    <GradientStop Color="DarkGreen" Offset="0.5" />
-                                </RadialGradientBrush>
-                            </Setter.Value>
-                        </Setter>
-                        <Style.Triggers>
-                            <EventTrigger RoutedEvent="Border.MouseEnter">
-                                <BeginStoryboard>
-                                    <Storyboard TargetProperty="Background.GradientStops[1].Offset" Duration="0:0:0.25">
-                                        <DoubleAnimation To="1.0" />
-                                        <Storyboard TargetProperty="Background.GradientStops[0].Offset">
-                                            <DoubleAnimation To="0.2" />
-                                        </Storyboard>
-                                    </Storyboard>
-                                </BeginStoryboard>
-                            </EventTrigger>
-                            <EventTrigger RoutedEvent="Border.MouseLeave">
-                                <BeginStoryboard>
-                                    <Storyboard TargetProperty="Background.GradientStops[1].Offset" Duration="0:0:0.25">
-                                        <DoubleAnimation To="0.5" />
-                                        <Storyboard TargetProperty="Background.GradientStops[0].Offset">
-                                            <DoubleAnimation To="0.0" />
-                                        </Storyboard>
-                                    </Storyboard>
-                                </BeginStoryboard>
-                            </EventTrigger>
-                        </Style.Triggers>
-                    </Style>
-                </Border.Style>
             </Border>
-            <Border Grid.Column="1" x:Name="Red" Margin="1" CornerRadius="16" MouseDown="Red_MouseDown">
+
+            <Border x:Name="Red" Grid.Row="0" Grid.Column="1"                   
+                    Style="{StaticResource RedButtonStyle}"
+                    MouseDown="Red_MouseDown">
                 <Border.Clip>
-                    <EllipseGeometry Center="-4,240" RadiusX="240" RadiusY="240" />
+                    <EllipseGeometry Center="0,240" RadiusX="240" RadiusY="240" />
                 </Border.Clip>
-                <Border.Style>
-                    <Style>
-                        <Setter Property="Border.Background">
-                            <Setter.Value>
-                                <RadialGradientBrush GradientOrigin="0,1" RadiusX="1" RadiusY="1">
-                                    <GradientStop Color="LightPink" Offset="0.0" />
-                                    <GradientStop Color="DarkRed" Offset="0.5" />
-                                </RadialGradientBrush>
-                            </Setter.Value>
-                        </Setter>
-                        <Style.Triggers>
-                            <EventTrigger RoutedEvent="Border.MouseEnter">
-                                <BeginStoryboard>
-                                    <Storyboard TargetProperty="Background.GradientStops[1].Offset" Duration="0:0:0.25">
-                                        <DoubleAnimation To="1.0" />
-                                        <Storyboard TargetProperty="Background.GradientStops[0].Offset">
-                                            <DoubleAnimation To="0.2" />
-                                        </Storyboard>
-                                    </Storyboard>
-                                </BeginStoryboard>
-                            </EventTrigger>
-                            <EventTrigger RoutedEvent="Border.MouseLeave">
-                                <BeginStoryboard>
-                                    <Storyboard TargetProperty="Background.GradientStops[1].Offset" Duration="0:0:0.25">
-                                        <DoubleAnimation To="0.5" />
-                                        <Storyboard TargetProperty="Background.GradientStops[0].Offset">
-                                            <DoubleAnimation To="0.0" />
-                                        </Storyboard>
-                                    </Storyboard>
-                                </BeginStoryboard>
-                            </EventTrigger>
-                        </Style.Triggers>
-                    </Style>
-                </Border.Style>
             </Border>
-            <Border Grid.Row="2" x:Name="Yellow" Margin="1" CornerRadius="16" MouseDown="Yellow_MouseDown">
+
+            <StackPanel x:Name="MessageBar" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Margin="4" Height="0">
+                <TextBlock x:Name="GameButton" Foreground="White" HorizontalAlignment="Center" FontSize="24" FontWeight="Bold" />
+                <TextBlock x:Name="GameScoreLabel" Text="{Binding Score, StringFormat=Your score: \{0\}}" Foreground="White" HorizontalAlignment="Center" FontWeight="Bold" IsEnabled="False" />
+            </StackPanel>
+
+            <Border x:Name="Yellow" Grid.Row="2" Grid.Column="0"
+                    Style="{StaticResource YellowButtonStyle}"
+                    MouseDown="Yellow_MouseDown">
                 <Border.Clip>
-                    <EllipseGeometry Center="240,-4" RadiusX="240" RadiusY="240" />
+                    <EllipseGeometry Center="240,0" RadiusX="240" RadiusY="240" />
                 </Border.Clip>
-                <Border.Style>
-                    <Style>
-                        <Setter Property="Border.Background">
-                            <Setter.Value>
-                                <RadialGradientBrush GradientOrigin="1,0" RadiusX="1" RadiusY="1">
-                                    <GradientStop Color="LightYellow" Offset="0.0" />
-                                    <GradientStop Color="Orange" Offset="0.5" />
-                                </RadialGradientBrush>
-                            </Setter.Value>
-                        </Setter>
-                        <Style.Triggers>
-                            <EventTrigger RoutedEvent="Border.MouseEnter">
-                                <BeginStoryboard>
-                                    <Storyboard TargetProperty="Background.GradientStops[1].Offset" Duration="0:0:0.25">
-                                        <DoubleAnimation To="1.0" />
-                                        <Storyboard TargetProperty="Background.GradientStops[0].Offset">
-                                            <DoubleAnimation To="0.2" />
-                                        </Storyboard>
-                                    </Storyboard>
-                                </BeginStoryboard>
-                            </EventTrigger>
-                            <EventTrigger RoutedEvent="Border.MouseLeave">
-                                <BeginStoryboard>
-                                    <Storyboard TargetProperty="Background.GradientStops[1].Offset" Duration="0:0:0.25">
-                                        <DoubleAnimation To="0.5" />
-                                        <Storyboard TargetProperty="Background.GradientStops[0].Offset">
-                                            <DoubleAnimation To="0.0" />
-                                        </Storyboard>
-                                    </Storyboard>
-                                </BeginStoryboard>
-                            </EventTrigger>
-                        </Style.Triggers>
-                    </Style>
-                </Border.Style>
             </Border>
-            <Border Grid.Row="2" Grid.Column="1" x:Name="Blue" Margin="1" CornerRadius="16" MouseDown="Blue_MouseDown">
+
+            <Border x:Name="Blue" Grid.Row="2" Grid.Column="1" 
+                    Style="{StaticResource BlueButtonStyle}"
+                    MouseDown="Blue_MouseDown">
                 <Border.Clip>
-                    <EllipseGeometry Center="-4,-4" RadiusX="240" RadiusY="240" />
+                    <EllipseGeometry Center="0,0" RadiusX="240" RadiusY="240" />
                 </Border.Clip>
-                <Border.Style>
-                    <Style>
-                        <Setter Property="Border.Background">
-                            <Setter.Value>
-                                <RadialGradientBrush GradientOrigin="0,0" RadiusX="1" RadiusY="1">
-                                    <GradientStop Color="LightSkyBlue" Offset="0.0" />
-                                    <GradientStop Color="Blue" Offset="0.5" />
-                                </RadialGradientBrush>
-                            </Setter.Value>
-                        </Setter>
-                        <Style.Triggers>
-                            <EventTrigger RoutedEvent="Border.MouseEnter">
-                                <BeginStoryboard>
-                                    <Storyboard TargetProperty="Background.GradientStops[1].Offset" Duration="0:0:0.25">
-                                        <DoubleAnimation To="1.0" />
-                                        <Storyboard TargetProperty="Background.GradientStops[0].Offset">
-                                            <DoubleAnimation To="0.2" />
-                                        </Storyboard>
-                                    </Storyboard>
-                                </BeginStoryboard>
-                            </EventTrigger>
-                            <EventTrigger RoutedEvent="Border.MouseLeave">
-                                <BeginStoryboard>
-                                    <Storyboard TargetProperty="Background.GradientStops[1].Offset" Duration="0:0:0.25">
-                                        <DoubleAnimation To="0.5" />
-                                        <Storyboard TargetProperty="Background.GradientStops[0].Offset">
-                                            <DoubleAnimation To="0.0" />
-                                        </Storyboard>
-                                    </Storyboard>
-                                </BeginStoryboard>
-                            </EventTrigger>
-                        </Style.Triggers>
-                    </Style>
-                </Border.Style>
             </Border>
+            
         </Grid>
     </Border>
 </Window>

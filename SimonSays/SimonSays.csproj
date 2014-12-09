@@ -58,7 +58,7 @@
     <Compile Include="Properties\Annotations.cs" />
     <Compile Include="SimonButtonEventArgs.cs" />
     <Compile Include="SimonSaysRound.cs" />
-    <Compile Include="SimonSaysScoreEventArgs.cs" />
+    <Compile Include="SimonSaysRoundCompleteEventArgs.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

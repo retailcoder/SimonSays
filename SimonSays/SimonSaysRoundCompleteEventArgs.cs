@@ -2,9 +2,9 @@
 
 namespace SimonSays
 {
-    public class SimonSaysScoreEventArgs : EventArgs
+    public class SimonSaysRoundCompleteEventArgs : EventArgs
     {
-        public SimonSaysScoreEventArgs(bool success, int score)
+        public SimonSaysRoundCompleteEventArgs(bool success, int score)
         {
             _success = success;
             _score = score;

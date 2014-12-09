@@ -23,14 +23,14 @@ namespace SimonSays
             _matches = 0;
         }
 
-        public event EventHandler<SimonSaysScoreEventArgs> RoundCompleted;
+        public event EventHandler<SimonSaysRoundCompleteEventArgs> RoundCompleted;
         public void OnRoundCompleted()
         {
             var handler = RoundCompleted;
             if (handler != null)
             {
                 var result = _matches == _sequence.Length;
-                RoundCompleted(this, new SimonSaysScoreEventArgs(result, Score));
+                RoundCompleted(this, new SimonSaysRoundCompleteEventArgs(result, Score));
             }
         }
 

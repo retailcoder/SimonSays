@@ -105,7 +105,7 @@ namespace SimonSays
             GameButton.MouseDown += GameButtonNextRound;
         }
 
-        private async Task AnimateMessageBand(double height)
+        public async Task AnimateMessageBand(double height)
         {
             var animation = new DoubleAnimation(height, new Duration(TimeSpan.FromMilliseconds(200)));
             
@@ -121,14 +121,17 @@ namespace SimonSays
 
         public async Task HighlightSimonButton(SimonButton button)
         {
+            var duration = new Duration(TimeSpan.FromMilliseconds(100));
+
             var border = _buttons[button];
-            var animation = new DoubleAnimation(0, 0.75, new Duration(TimeSpan.FromMilliseconds(100)));
+            var animation = new DoubleAnimation(0, 0.75, duration);
 
             Storyboard.SetTargetName(animation, button.ToString());
             Storyboard.SetTargetProperty(animation, new PropertyPath("Background.GradientStops[1].Offset"));
 
             var story = new Storyboard();
             story.Children.Add(animation);
+
             await story.BeginAsync(border);
 
             story.Remove();
@@ -189,8 +192,9 @@ namespace SimonSays
             EnableButtons();
         }
 
-        private void GameButtonEndGame(object sender, MouseButtonEventArgs e)
+        private async void GameButtonEndGame(object sender, MouseButtonEventArgs e)
         {
+            await AnimateMessageBand(0);
             Close();
             e.Handled = true;
         }

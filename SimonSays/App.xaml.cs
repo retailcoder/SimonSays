@@ -57,7 +57,6 @@ namespace SimonSays
             _currentRound = new SimonSaysRound(GenerateSequence(sequenceLength), score);
             _currentRound.RoundCompleted += _currentRound_RoundCompleted;
             _mainWindow.DataContext = _currentRound;
-            _mainWindow.DataContext = _currentRound;
             PlaySequence();
         }
 
@@ -70,7 +69,7 @@ namespace SimonSays
             }
         }
 
-        private void _currentRound_RoundCompleted(object sender, SimonSaysScoreEventArgs e)
+        private void _currentRound_RoundCompleted(object sender, SimonSaysRoundCompleteEventArgs e)
         {
             if (e.Success)
             {
